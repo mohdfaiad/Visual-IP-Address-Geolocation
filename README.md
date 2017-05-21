@@ -1,6 +1,6 @@
----
-title: Create a Visual IP Address Geolocation
----
+
+Create a Visual IP Address Geolocation
+--------------------------------------
 
 ![](media/adf294db321232f310841a4d1d70720d.png)
 
