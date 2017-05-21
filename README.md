@@ -1,4 +1,4 @@
-
+[
 Create a Visual IP Address Geolocation
 --------------------------------------
 
@@ -14,7 +14,8 @@ able to re-enter any IPaddress.
 View
 ----
 
-Live-view the project here.
+Live-view the project [here](https://www.bayeseanblog.com/blog/public/demo/geolocation/igeolocate.php
+).
 
 Languages and Libraries.
 ------------------------
