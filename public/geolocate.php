@@ -4,10 +4,10 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link href="../css/bootstrap.min.css" rel="stylesheet">
+		<link href="../css/bootstrap.min.css" rel="stylesheet"><!--bootstrap 4-->
 	    <link  rel="stylesheet" href="../css/jquery-jvectormap-2.0.3.css" type ="text/css" media ="screen">
             <script src="../js/jquery-2.2.3.min.js"></script>
-            <script src="../js/bootstrap.min.js"></script>
+            <script src="../js/bootstrap.min.js"></script><!--bootstrap 4-->
     	    <script src="../js/jquery-jvectormap-2.0.3.min.js"></script>
 		   <script src="../js/jquery-jvectormap-world-mill.js"></script>
 	</head>
@@ -25,28 +25,36 @@ if (!empty($_POST)){
    if (!filter_var($ip, FILTER_VALIDATE_IP)){
      $ip = " Is not a valid ip address";
       }
-      else{
-//Collect info in JSON Format from FreeGeoip - set ip address to get info
- //Set the path
-$ipaddress ="http://freegeoip.net/json/".trim($_POST['ip']);
+      Else
+{         //Set the path
+$ipaddress ="http://api.ipstack.com/".trim($_POST['ip'])."?access_key=Add your Key";
+
 //Reads the file at the path returns a string (no options used)
+
 $ipaddress = file_get_contents($ipaddress);
 //  Alert ip info
 $info = $ipaddress;
+
 // decode the jSON string received into an associative array in anPHP variable
+
 $response = json_decode($ipaddress,true);
+
+if (empty($response)){
+$phpstr = "NO IP address sent by Host";
+}else{}
 // Manipulate the array into a map marker JSON Object format
 $new = "[{'latLng'  : [" .$response['latitude']. ", ".$response['longitude']. "] ,  'name':  '".$response["country_name"]."'}]";
+}
+
 //Send to  Javascript (client) as a JSON type Object which in PHP means an Array (No direct translation between PHP objects and JSON objects)
 $phpstr = $new;
 }
-}
+?>
 
- ?>
 <body>
-    <div class="container">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="row">
+    <div class="container-fluid">
+      <div class="col-md-12">
+       
 <br>
           <div class="alert alert-info">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -56,12 +64,13 @@ $phpstr = $new;
       
 <div>
   </div>
-  </div>
+</div>
+  
           <h4> Enter IP Address (ie in  format XX.XX.XX.XX) </h4>
               <form method="POST" action="geolocate.php">
                    <form class="form-horizontal"  method='post'>
                   <div class="form-group <?php echo !empty($error)?'error':'';?>">
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                    <div class="col">
                    <!-- <div><label>Add An IP Address</label>-->
                     <input type='text' name='ip' class="form-control input" value='<?php if(isset($error)){ echo $_POST['ip'];}?>'>
                     <?php if (!empty($error)): ?>
@@ -70,10 +79,12 @@ $phpstr = $new;
                     <?php endif; ?>
                 </div>
                 </div>
-                <button type="submit" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-check"></span></button>
-                <a class="btn btn-primary btn-sm" href="geolocate.php"><span class="glyphicon glyphicon-new-window"></span></a>
+                <div class="col-md-3">
+                <button type="submit" class="btn btn-success"> Send IP Data </button>
+               
                         </form>
-							              <br>
+                      </div>
+                            <br>
                             <div class="panel panel-default">
                             <div class="panel-heading">
                             <div class="text-center">
@@ -84,9 +95,9 @@ $phpstr = $new;
                               <div id="world-map" style=" height: 300px;"></div>
 
 
+
+
 <script language="JavaScript" type="text/javascript">
-
-
  $(function() {
   //receive Server Response
    var jsstr = <?php echo $phpstr; ?>;
@@ -120,12 +131,13 @@ $phpstr = $new;
         size: '2'
       }
     },
-
     markers: jsstr
    });
 });
+
 </script>
  </div>
                   </div>
                     </body>
            </html>
+          
